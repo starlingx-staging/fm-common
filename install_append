@@ -1,0 +1,22 @@
+pushd fm-common/sources
+
+python3 -tt setup.py build -b py3 install --root=%{buildroot}
+
+version=%{version}
+MAJOR=${version%%.*}
+MINOR=${version##*.}
+make DEST_DIR=%{buildroot} BIN_DIR=%{_bindir} LIB_DIR=%{_libdir} INC_DIR=%{_includedir} MAJOR=$MAJOR MINOR=$MINOR install_non_bb
+
+install -d %{buildroot}/usr/bin
+install -m 755 fm_db_sync_event_suppression.py %{buildroot}/usr/bin/fm_db_sync_event_suppression.py
+
+# install the headers that used by fm-mgr package
+install -m 644 -p -D fmConfig.h %{buildroot}%{_includedir}/fmConfig.h
+install -m 644 -p -D fmLog.h %{buildroot}%{_includedir}/fmLog.h
+
+# install fmAlarm.h in CGCS_DOC_DEPLOY_DIR
+# used by fm-doc package to validate the Alarms & Logs Doc Yaml file
+#CGCS_DOC_DEPLOY=$RPM_BUILD_ROOT/%{cgcs_doc_deploy_dir}
+#install -d $CGCS_DOC_DEPLOY
+#install -m 644 fmAlarm.h $CGCS_DOC_DEPLOY
+popd
