@@ -1,3 +1,9 @@
 version=%{version}
 MAJOR=${version%%.*}
-MINOR=${version##*.}
+#MINOR=${version##*.}
+MINOR=0
+pushd fm-common/sources
+make  %{?_smp_mflags} MAJOR=${version%%.*} MINOR=0 EXTRACCFLAGS="$CXXFLAGS"
+
+python3 setup.py build -b py3
+popd

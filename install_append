@@ -4,7 +4,8 @@ python3 -tt setup.py build -b py3 install --root=%{buildroot}
 
 version=%{version}
 MAJOR=${version%%.*}
-MINOR=${version##*.}
+#MINOR=${version##*.}
+MINOR=0
 make DEST_DIR=%{buildroot} BIN_DIR=%{_bindir} LIB_DIR=%{_libdir} INC_DIR=%{_includedir} MAJOR=$MAJOR MINOR=$MINOR install_non_bb
 
 install -d %{buildroot}/usr/bin
